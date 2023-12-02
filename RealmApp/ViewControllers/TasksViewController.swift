@@ -82,8 +82,12 @@ final class TasksViewController: UITableViewController {
         let doneAction = UIContextualAction(style: .normal, title: doneButtonTitle) { [unowned self] _, _, isDone in
             storageManager.doneTask(task)
             
-            let currentTaskIndex = IndexPath(row: currentTasks.count - 1, section: 0)
-            let completedTaskIndex = IndexPath(row: completedTasks.count - 1, section: 1)
+            let currentTaskIndex = IndexPath(
+                row: currentTasks.index(of: task) ?? 0,
+                section: 0)
+            let completedTaskIndex = IndexPath(
+                row: completedTasks.index(of: task) ?? 0,
+                section: 1)
             
             let plaseForTask = indexPath.section == 0 ? completedTaskIndex : currentTaskIndex
             

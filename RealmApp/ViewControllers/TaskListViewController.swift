@@ -49,8 +49,11 @@ final class TaskListViewController: UITableViewController {
         content.text = taskList.title
         
         let curentTasks = taskList.tasks.filter("isComplete = false")
-       
-        if storageManager.getIsCompleted(taskList) {
+        
+        if taskList.tasks.isEmpty {
+            content.secondaryText = "0"
+            cell.accessoryType = .none
+        } else if curentTasks.isEmpty {
             content.secondaryText = nil
             cell.accessoryType = .checkmark
         } else {
@@ -111,10 +114,9 @@ final class TaskListViewController: UITableViewController {
 
     @IBAction func sortingList(_ sender: UISegmentedControl) {
 
-        taskLists = sender.selectedSegmentIndex == 0 ?
-        taskLists.sorted(byKeyPath: "title",ascending: true) :
-        taskLists.sorted(byKeyPath: "date", ascending: false)
-                
+        taskLists = sender.selectedSegmentIndex == 0
+            ? taskLists.sorted(byKeyPath: "date", ascending: true)
+            : taskLists.sorted(byKeyPath: "title", ascending: false)
         tableView.reloadData()
     }
     
@@ -151,7 +153,7 @@ extension TaskListViewController {
     
     private func save(taskList: String) {
 		storageManager.save(taskList) { taskList in
-			let rowIndex = IndexPath(row: taskLists.firstIndex(of: taskList) ?? 0, section: 0)
+			let rowIndex = IndexPath(row: taskLists.index(of: taskList) ?? 0, section: 0)
 			tableView.insertRows(at: [rowIndex], with: .automatic)
 		}
     }

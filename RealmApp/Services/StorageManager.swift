@@ -56,11 +56,7 @@ final class StorageManager {
 		}
     }
     
-    func getIsCompleted(_ taskList: TaskList) -> Bool {
-        taskList.tasks.allSatisfy { task in
-            task.isComplete
-        }
-    }
+
 
     // MARK: - Tasks
     func save(_ task: String, withNote note: String, to taskList: TaskList, completion: (Task) -> Void) {
@@ -73,7 +69,6 @@ final class StorageManager {
     
     func deleteTask(_ task: Task) {
         write {
-            //realm.delete(taskList.tasks)
             realm.delete(task)
         }
     }
@@ -90,18 +85,8 @@ final class StorageManager {
     func doneTask(_ task: Task) {
         write {
             task.isComplete.toggle()
-
-            
-            }
-      
-            
         }
-    
-
-    
-    
-    
-    
+    }
     
 	
 	private func write(completion: () -> Void) {
